@@ -11,7 +11,7 @@ def rhofrac_ideal_gas(y, y0 = 1.0e4):
     return np.exp(-y / y0)
 
 def rhofrac_adiabatic(y, a=6.5e-3, alpha=2.5, T0=288.2):  # rho/rho0 as given in the appendix
-    return (1 - a / T0 * y) ** alpha
+    return np.power((1 - a / T0 * y), alpha)
 
 y = np.arange(0, 45000, 1)
 
@@ -26,4 +26,5 @@ plt.xlim(left = 0)
 plt.ylim(bottom=0)
 plt.legend()
 plt.grid()
+plt.savefig("air_density_distribution_models.pdf")
 plt.show()
