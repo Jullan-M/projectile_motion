@@ -4,7 +4,6 @@ __author__ = 'Jullan'
 import numpy as np
 from rk4 import Rk4
 from matplotlib import pyplot as plt
-from multiprocessing import Pool
 from matplotlib import rc
 #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 ## for Palatino and other serif fonts use:
