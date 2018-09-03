@@ -1,7 +1,6 @@
 __author__ = 'Jullan'
 # -*- coding: utf-8 -*-
 #Made by Jullan
-import numpy as np
 
 class Rk4:
     def __init__(self, t0, y0, dt, f):

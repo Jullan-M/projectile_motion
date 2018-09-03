@@ -351,7 +351,7 @@ if (__name__ == '__main__'):
     print("Description: uniform quadratic drag \t optimal th0 = 39.484 deg \t v0 = 700 m/s")
     print("Landing point: " + str(mo3.xl) + "\tTime of flight: " + str(mo3.tl) + "\tMaximum projectile height: " + str(mo3.y_max))
     print()
-    
+
     print("Description: isothermal ideal drag \t optimal th0 = 46.757 deg \t v0 = 700 m/s")
     print("Landing point: " + str(mo5.xl) + "\tTime of flight: " + str(mo5.tl) + "\tMaximum projectile height: " + str(mo5.y_max))
     print()
