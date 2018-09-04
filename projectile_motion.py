@@ -4,7 +4,7 @@ __author__ = 'Jullan'
 import numpy as np
 from rk4 import Rk4
 from matplotlib import pyplot as plt
-from matplotlib import rc
+#from matplotlib import rc
 #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 ## for Palatino and other serif fonts use:
 #rc('font',**{'family':'serif','serif':['Palatino']})
@@ -230,7 +230,9 @@ class Motion_2D_nodrag(Motion_2D):
 
         #print("Details of projectile when it hits the ground:")
         #print(self.projectile)
-        self.projectile.reset() #   Reset the projectile for future usage.
+
+        #   Reset the projectile.
+        self.projectile.reset()
         self.x_arr = np.array(x_arr0)
         self.y_arr = np.array(y_arr0)
 
