@@ -245,11 +245,10 @@ class Motion_2D_drag(Motion_2D):
     #   Second-order DEs for a projectile with drag.
     #   Needed for Rk4-algorithm
     def ax(self, t, vx):
-        return -self.bpm*(vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
+        return -self.bpm*self.projectile.v*vx
 
     def ay(self, t, vy):
-        return -self.g-self.bpm*(vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
-
+        return -self.g-self.bpm*self.projectile.v*vy
 #   Air density correction model 1: Isothermic ideal gas
 class Motion_2D_drag_ideal_gas(Motion_2D_drag):
     def __init__(self, projectile, dt, g=9.81, bpm = 4.00e-5, y0 = 1.0e4):  #   Constants as given in compulsory exercise 1 description/appendix.
@@ -261,10 +260,10 @@ class Motion_2D_drag_ideal_gas(Motion_2D_drag):
         return np.exp(-self.projectile.y / self.y0)
 
     def ax(self, t, vx):
-        return -self.bpm * self.rhofrac_ideal_gas() * (vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
+        return -self.bpm * self.rhofrac_ideal_gas() * self.projectile.v*vx
 
     def ay(self, t, vy):
-        return -self.g - self.bpm * self.rhofrac_ideal_gas() * (vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
+        return -self.g - self.bpm * self.rhofrac_ideal_gas() * self.projectile.v*vy
 
 #   Air density correction model 2: Adiabatic approximation.
 class Motion_2D_drag_adiabatic(Motion_2D_drag):
@@ -280,10 +279,10 @@ class Motion_2D_drag_adiabatic(Motion_2D_drag):
         return (1 - self.a / self.T0 * self.projectile.y) ** self.alpha
 
     def ax(self, t, vx):
-        return -self.bpm * self.rhofrac_adiabatic() * (vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
+        return -self.bpm * self.rhofrac_adiabatic() * self.projectile.v*vx
 
     def ay(self, t, vy):
-        return -self.g - self.bpm * self.rhofrac_adiabatic() * (vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
+        return -self.g - self.bpm * self.rhofrac_adiabatic() * self.projectile.v*vy
 
 if (__name__ == '__main__'):
     #   Projectile setup
