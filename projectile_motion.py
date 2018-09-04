@@ -234,7 +234,8 @@ class Motion_2D_nodrag(Motion_2D):
         self.x_arr = np.array(x_arr0)
         self.y_arr = np.array(y_arr0)
 
-class Motion_2D_drag(Motion_2D): #  Assumes uniform air density everywhere.
+class Motion_2D_drag(Motion_2D):
+    #  Assumes uniform air density everywhere.
     def __init__(self, projectile, dt, g=9.81, bpm = 4.00e-5):  #   Constants as given in compulsory exercise 1 description/appendix.
         super().__init__(projectile, dt)
         self.g = g
@@ -244,12 +245,13 @@ class Motion_2D_drag(Motion_2D): #  Assumes uniform air density everywhere.
     #   Second-order DEs for a projectile with drag.
     #   Needed for Rk4-algorithm
     def ax(self, t, vx):
-        return -self.bpm*vx**2
+        return -self.bpm*(vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
 
     def ay(self, t, vy):
-        return -self.g-self.bpm*vy**2
+        return -self.g-self.bpm*(vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
 
-class Motion_2D_drag_ideal_gas(Motion_2D_drag): #   Air density correction model 1: Isothermic ideal gas
+#   Air density correction model 1: Isothermic ideal gas
+class Motion_2D_drag_ideal_gas(Motion_2D_drag):
     def __init__(self, projectile, dt, g=9.81, bpm = 4.00e-5, y0 = 1.0e4):  #   Constants as given in compulsory exercise 1 description/appendix.
         super().__init__(projectile, dt, g, bpm)
         self.y0 = y0
@@ -259,12 +261,13 @@ class Motion_2D_drag_ideal_gas(Motion_2D_drag): #   Air density correction model
         return np.exp(-self.projectile.y / self.y0)
 
     def ax(self, t, vx):
-        return -self.bpm * vx ** 2 * self.rhofrac_ideal_gas()
+        return -self.bpm * self.rhofrac_ideal_gas() * (vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
 
     def ay(self, t, vy):
-        return -self.g - self.bpm * vy ** 2 * self.rhofrac_ideal_gas()
+        return -self.g - self.bpm * self.rhofrac_ideal_gas() * (vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
 
-class Motion_2D_drag_adiabatic(Motion_2D_drag): #   Air density correction model 2: Adiabatic approximation.
+#   Air density correction model 2: Adiabatic approximation.
+class Motion_2D_drag_adiabatic(Motion_2D_drag):
     def __init__(self, projectile, dt, g=9.81, bpm = 4.00e-5, a=6.5e-3, alpha=2.5, T0=288.2):   #   Constants as given in compulsory exercise 1 description/appendix. We assume that T0 = 15 C.
         super().__init__(projectile, dt, g, bpm)
         self.type = "adiabatic drag"
@@ -272,23 +275,24 @@ class Motion_2D_drag_adiabatic(Motion_2D_drag): #   Air density correction model
         self.alpha = alpha
         self.T0 = T0
 
-    def rhofrac_adiabatic(self):    #   rho/rho0 as given in the appendix
+    def rhofrac_adiabatic(self):
+        #   rho/rho0 as given in the appendix.
         return (1 - self.a / self.T0 * self.projectile.y) ** self.alpha
 
     def ax(self, t, vx):
-        return -self.bpm * self.rhofrac_adiabatic() * vx ** 2
+        return -self.bpm * self.rhofrac_adiabatic() * (vx**2+self.projectile.v_vec[1]**2)*np.cos(self.projectile.th)
 
     def ay(self, t, vy):
-        return -self.g - self.bpm * self.rhofrac_adiabatic() * vy ** 2
+        return -self.g - self.bpm * self.rhofrac_adiabatic() * (vy**2+self.projectile.v_vec[0]**2)*np.sin(self.projectile.th)
 
 if (__name__ == '__main__'):
     #   Projectile setup
     pr1 = Projectile_2D( 0.0, 0.0, 700, 45.000 )
-    pr2 = Projectile_2D( 0.0, 0.0, 700, 39.484 ) # x0,y0,v0,th0
-    pr3 = Projectile_2D( 0.0, 0.0, 700, 46.757 )
-    pr4 = Projectile_2D( 0.0, 0.0, 700, 44.938 )
-    bertha = Projectile_2D( 0.0, 0.0, 1640, 54.9653 )
-
+    pr2 = Projectile_2D( 0.0, 0.0, 700, 38.7817 ) # x0,y0,v0,th0
+    pr3 = Projectile_2D( 0.0, 0.0, 700, 45.9355 )
+    pr4 = Projectile_2D( 0.0, 0.0, 700, 43.7584 )
+    bertha = Projectile_2D( 0.0, 0.0, 1640, 55.6914 )
+    #test = Projectile_2D( 0.0, 0.0, 700, )
 
     #   NO DRAG
     #   Analytic motion
@@ -298,22 +302,24 @@ if (__name__ == '__main__'):
 
     #   WITH DRAG, UNIFORM
     mo3 = Motion_2D_drag( pr2, 0.01)
-    #mo3.optimize_proj_th0( 39.45, 39.50, 0.001 )
+    #mo3.optimize_proj_th0( 38.75, 38.8, 0.0001 )
+    #mo4 = Motion_2D_drag( test, 0.01 )
 
     #   WITH DRAG, ISOTHERMAL IDEAL GAS
     mo5 = Motion_2D_drag_ideal_gas(pr3, 0.01)
-    #mo5.optimize_proj_th0( 46.75, 46.76, 0.001)
+    #mo5.optimize_proj_th0( 45.93, 45.95, 0.0001 )
 
     #   WITH DRAG, ADIABATIC APPROXIMATION
     mo7 = Motion_2D_drag_adiabatic(pr4, 0.01)
-    #mo7.optimize_proj_th0( 44.93, 44.94, 0.001)
+    #mo7.optimize_proj_th0( 43.75, 43.77, 0.0001 )
         #   BIG BERTHA (PARIS GUN)
     mo8 = Motion_2D_drag_adiabatic(bertha, 0.01)
-    # mo8.optimize_proj_th0( 54.96, 54.97, 0.0001)
+    #mo8.optimize_proj_th0( 55.68, 55.70, 0.0001 )
 
     mo1.calculate_analytic_trajectory()
     mo2.calculate_trajectory()
     mo3.calculate_trajectory()
+    #mo4.calculate_trajectory()
     mo5.calculate_trajectory()
     mo7.calculate_trajectory()
     mo8.calculate_trajectory()
@@ -340,6 +346,8 @@ if (__name__ == '__main__'):
     plt.plot(mo3.x_arr/1000, mo3.y_arr/1000, label=mo3 + r", $\theta =" + "%.3f" % np.rad2deg(mo3.projectile.th0) + r"^\circ$", color="r", linestyle="-")
     plt.plot(mo5.x_arr / 1000, mo5.y_arr / 1000, label=mo5 + r", $\theta =" + "%.3f" % np.rad2deg(mo5.projectile.th0) + r"^\circ$", color="g", linestyle="-")
     plt.plot(mo7.x_arr / 1000, mo7.y_arr / 1000, label=mo7 + r", $\theta =" + "%.3f" % np.rad2deg(mo7.projectile.th0) + r"^\circ$", color="m", linestyle="-")
+    #plt.plot(mo4.x_arr / 1000, mo4.y_arr / 1000, label=mo4 + r", $\theta =" + "%.3f" % np.rad2deg(mo4.projectile.th0) + r"^\circ$", color="b", linestyle="-")
+
     plt.title(r"Trajectory curves of projectiles with optimal $\theta_0$.")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
