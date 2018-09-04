@@ -325,8 +325,8 @@ if (__name__ == '__main__'):
     mo8.calculate_trajectory()
     # Plotting
     plt.figure(1)
-    plt.plot(mo1.x_arr / 1000, mo1.y_arr / 1000, label="Analytic, " + str(mo1) + r", $\theta =" + "%.2f" % np.rad2deg(mo1.projectile.th0) + r"^\circ$", color="b")
-    plt.plot(mo2.x_arr / 1000, mo2.y_arr / 1000, label="Rk4, " + str(mo2) + r", $\theta =" + "%.2f" % np.rad2deg(mo2.projectile.th0) + r"^\circ$", color="r", linestyle="--")
+    plt.plot(mo1.x_arr / 1000, mo1.y_arr / 1000, label="Analytic, " + str(mo1) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo1.projectile.th0) + r"^\circ$", color="b")
+    plt.plot(mo2.x_arr / 1000, mo2.y_arr / 1000, label="Rk4, " + str(mo2) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo2.projectile.th0) + r"^\circ$", color="r", linestyle="--")
     plt.title(r"Trajectory curves of projectile")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
@@ -343,12 +343,12 @@ if (__name__ == '__main__'):
     print()
 
     plt.figure(2)
-    plt.plot(mo3.x_arr/1000, mo3.y_arr/1000, label=mo3 + r", $\theta =" + "%.3f" % np.rad2deg(mo3.projectile.th0) + r"^\circ$", color="r", linestyle="-")
-    plt.plot(mo5.x_arr / 1000, mo5.y_arr / 1000, label=mo5 + r", $\theta =" + "%.3f" % np.rad2deg(mo5.projectile.th0) + r"^\circ$", color="g", linestyle="-")
-    plt.plot(mo7.x_arr / 1000, mo7.y_arr / 1000, label=mo7 + r", $\theta =" + "%.3f" % np.rad2deg(mo7.projectile.th0) + r"^\circ$", color="m", linestyle="-")
+    plt.plot(mo3.x_arr/1000, mo3.y_arr/1000, label=mo3 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo3.projectile.th0) + r"^\circ$", color="r", linestyle="-")
+    plt.plot(mo5.x_arr / 1000, mo5.y_arr / 1000, label=mo5 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo5.projectile.th0) + r"^\circ$", color="g", linestyle="-")
+    plt.plot(mo7.x_arr / 1000, mo7.y_arr / 1000, label=mo7 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo7.projectile.th0) + r"^\circ$", color="m", linestyle="-")
     #plt.plot(mo4.x_arr / 1000, mo4.y_arr / 1000, label=mo4 + r", $\theta =" + "%.3f" % np.rad2deg(mo4.projectile.th0) + r"^\circ$", color="b", linestyle="-")
 
-    plt.title(r"Trajectory curves of projectiles with optimal $\theta_0$.")
+    plt.title(r"Trajectory of projectiles with optimal $\theta_0$.")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
     plt.xlim(left=0)
@@ -370,7 +370,7 @@ if (__name__ == '__main__'):
     print()
 
     plt.figure(2)
-    plt.plot(mo8.x_arr / 1000, mo8.y_arr / 1000, label=mo3 + r", $\theta =" + "%.3f" % np.rad2deg(mo8.projectile.th0) + r"^\circ$", color="r", linestyle="-")
+    plt.plot(mo8.x_arr / 1000, mo8.y_arr / 1000, label=mo3 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo8.projectile.th0) + r"^\circ$", color="r", linestyle="-")
     plt.title(r"Trajectory curve of Big Bertha cannon projectile")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
