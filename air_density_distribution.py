@@ -20,7 +20,7 @@ plt.axhline(y=1, label=r"Uniform $\frac{\rho}{\rho_0}$", color="g", linestyle="-
 plt.plot(y/1000, rhofrac_ideal_gas(y), label=r"Ideal isothermal $\frac{\rho}{\rho_0}$", color="C1", linestyle="-")
 plt.plot(y/1000, rhofrac_adiabatic(y), label=r"Adiabatic $\frac{\rho}{\rho_0}$", color="b", linestyle="-")
 plt.title(r"Various air density distribution models")
-plt.xlabel(r"$x$ (km)", fontsize=16)
+plt.xlabel(r"$y$ (km)", fontsize=16)
 plt.ylabel(r"$\frac{\rho}{\rho_0}$", fontsize=16)
 plt.xlim(left = 0)
 plt.ylim(bottom=0)
