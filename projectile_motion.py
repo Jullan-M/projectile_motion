@@ -59,6 +59,7 @@ class Motion_2D:
         self.dt = dt
 
         #   Useful details about the motion.
+        self.th0 = self.projectile.th0
         self.xl = 0
         self.y_max = 0
         self.tl = 0
@@ -300,34 +301,50 @@ if (__name__ == '__main__'):
     mo1 = Motion_2D_nodrag( pr1, 0.01)
     #   Rk4-algorithm motion
     mo2 = Motion_2D_nodrag( pr1, 0.01)
+    mo1.calculate_analytic_trajectory()
+    mo2.calculate_trajectory()
 
     #   WITH DRAG, UNIFORM
     mo3 = Motion_2D_drag( pr2, 0.01)
+    mo3.calculate_trajectory()
     #mo3.optimize_proj_th0( 38.75, 38.8, 0.0001 )
-    #mo4 = Motion_2D_drag( test, 0.01 )
 
     #   WITH DRAG, ISOTHERMAL IDEAL GAS
     mo5 = Motion_2D_drag_ideal_gas(pr3, 0.01)
+    mo5.calculate_trajectory()
     #mo5.optimize_proj_th0( 45.93, 45.95, 0.0001 )
+    pr1.set_th0(30)
+    mo4 = Motion_2D_drag_ideal_gas(pr1, 0.01)
+    mo4.calculate_trajectory()
+    pr1.set_th0(40)
+    mo6 = Motion_2D_drag_ideal_gas(pr1, 0.01)
+    mo6.calculate_trajectory()
+    pr1.set_th0(50)
+    mo9 = Motion_2D_drag_ideal_gas(pr1, 0.01)
+    mo9.calculate_trajectory()
+    pr1.set_th0(60)
+    mo10 = Motion_2D_drag_ideal_gas(pr1, 0.01)
+    mo10.calculate_trajectory()
 
     #   WITH DRAG, ADIABATIC APPROXIMATION
     mo7 = Motion_2D_drag_adiabatic(pr4, 0.01)
+    mo7.calculate_trajectory()
     #mo7.optimize_proj_th0( 43.75, 43.77, 0.0001 )
         #   BIG BERTHA (PARIS GUN)
     mo8 = Motion_2D_drag_adiabatic(bertha, 0.01)
+    mo8.calculate_trajectory()
     #mo8.optimize_proj_th0( 55.68, 55.70, 0.0001 )
 
-    mo1.calculate_analytic_trajectory()
-    mo2.calculate_trajectory()
-    mo3.calculate_trajectory()
+
     #mo4.calculate_trajectory()
-    mo5.calculate_trajectory()
-    mo7.calculate_trajectory()
-    mo8.calculate_trajectory()
+
+
+
+
     # Plotting
     plt.figure(1)
-    plt.plot(mo1.x_arr / 1000, mo1.y_arr / 1000, label="Analytic, " + str(mo1) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo1.projectile.th0) + r"^\circ$", color="b")
-    plt.plot(mo2.x_arr / 1000, mo2.y_arr / 1000, label="Rk4, " + str(mo2) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo2.projectile.th0) + r"^\circ$", color="r", linestyle="--")
+    plt.plot(mo1.x_arr / 1000, mo1.y_arr / 1000, label="Analytic, " + str(mo1) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo1.th0) + r"^\circ$", color="b")
+    plt.plot(mo2.x_arr / 1000, mo2.y_arr / 1000, label="Rk4, " + str(mo2) + r", $\theta_0 =" + "%.2f" % np.rad2deg(mo2.th0) + r"^\circ$", color="r", linestyle="--")
     plt.title(r"Trajectory of projectile")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
@@ -344,9 +361,26 @@ if (__name__ == '__main__'):
     print()
 
     plt.figure(2)
-    plt.plot(mo3.x_arr/1000, mo3.y_arr/1000, label=mo3 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo3.projectile.th0) + r"^\circ$", color="r", linestyle="-")
-    plt.plot(mo5.x_arr / 1000, mo5.y_arr / 1000, label=mo5 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo5.projectile.th0) + r"^\circ$", color="g", linestyle="-")
-    plt.plot(mo7.x_arr / 1000, mo7.y_arr / 1000, label=mo7 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo7.projectile.th0) + r"^\circ$", color="m", linestyle="-")
+    plt.plot(mo4.x_arr / 1000, mo4.y_arr / 1000, label=r"$\theta_0 =" + "%.0f" % np.rad2deg(mo4.th0) + r"^\circ$", color="r", linestyle="-")
+    plt.plot(mo6.x_arr / 1000, mo6.y_arr / 1000, label=r"$\theta_0 =" + "%.0f" % np.rad2deg(mo6.th0) + r"^\circ$", color="g", linestyle="-")
+    plt.plot(mo9.x_arr / 1000, mo9.y_arr / 1000, label=r"$\theta_0 =" + "%.0f" % np.rad2deg(mo9.th0) + r"^\circ$", color="b", linestyle="-")
+    plt.plot(mo10.x_arr / 1000, mo10.y_arr / 1000, label=r"$\theta_0 =" + "%.0f" % np.rad2deg(mo10.th0) + r"^\circ$", color="m", linestyle="-")
+    # plt.plot(mo4.x_arr / 1000, mo4.y_arr / 1000, label=mo4 + r", $\theta =" + "%.3f" % np.rad2deg(mo4.projectile.th0) + r"^\circ$", color="b", linestyle="-")
+
+    plt.title(r"Trajectory of projectiles in an ideal isothermic gas.")
+    plt.xlabel(r"$x$ (km)", fontsize=16)
+    plt.ylabel(r"$y$ (km)", fontsize=16)
+    plt.xlim(left=0)
+    plt.ylim(bottom=0)
+    plt.legend()
+    plt.grid()
+    plt.savefig("traj_curves_in_isothermic_gas.pdf")
+    plt.show()
+
+    plt.figure(3)
+    plt.plot(mo3.x_arr/1000, mo3.y_arr/1000, label=mo3 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo3.th0) + r"^\circ$", color="r", linestyle="-")
+    plt.plot(mo5.x_arr / 1000, mo5.y_arr / 1000, label=mo5 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo5.th0) + r"^\circ$", color="g", linestyle="-")
+    plt.plot(mo7.x_arr / 1000, mo7.y_arr / 1000, label=mo7 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo7.th0) + r"^\circ$", color="m", linestyle="-")
     #plt.plot(mo4.x_arr / 1000, mo4.y_arr / 1000, label=mo4 + r", $\theta =" + "%.3f" % np.rad2deg(mo4.projectile.th0) + r"^\circ$", color="b", linestyle="-")
 
     plt.title(r"Trajectory of projectiles with optimal $\theta_0$.")
@@ -370,8 +404,8 @@ if (__name__ == '__main__'):
     print("Landing point: " + str(mo7.xl) + "\tTime of flight: " + str(mo7.tl) + "\tMaximum projectile height: " + str(mo7.y_max))
     print()
 
-    plt.figure(2)
-    plt.plot(mo8.x_arr / 1000, mo8.y_arr / 1000, label=mo8 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo8.projectile.th0) + r"^\circ$", color="r", linestyle="-")
+    plt.figure(4)
+    plt.plot(mo8.x_arr / 1000, mo8.y_arr / 1000, label=mo8 + r", $\theta_0 =" + "%.3f" % np.rad2deg(mo8.th0) + r"^\circ$", color="k", linestyle="-")
     plt.title(r"Trajectory of Big Bertha cannon projectile")
     plt.xlabel(r"$x$ (km)", fontsize=16)
     plt.ylabel(r"$y$ (km)", fontsize=16)
