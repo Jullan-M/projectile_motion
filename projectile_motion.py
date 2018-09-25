@@ -416,7 +416,7 @@ if (__name__ == '__main__'):
     plt.savefig("big_bertha_trajectory.pdf")
     plt.show()
     print("BIG BERTHA LONG RANGE CANNON.")
-    print("Description: adiabatic drag \t optimal th0 = 54.9653 deg \t v0 = 1640 m/s")
+    print("Description: adiabatic drag \t optimal th0 = 55.691 deg \t v0 = 1640 m/s")
     print("Landing point: " + str(mo8.xl) + "\tTime of flight: " + str(mo8.tl) + "\tMaximum projectile height: " + str(mo8.y_max))
     print()
 
